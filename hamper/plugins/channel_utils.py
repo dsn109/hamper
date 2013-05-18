@@ -23,18 +23,20 @@ class ChannelUtils(ChatCommandPlugin):
 
     class LeaveCommand(Command):
         name = 'leave'
-        regex = r'^leave (#?[-_a-zA-Z0-9])?$'
+        regex = r'^leave( #?[-_a-zA-Z0-9]+)?$'
 
         short_desc = 'leave [#channel] - Ask the bot to leave.'
         long_desc = 'If channel is ommited, leave the current channel.'
 
         def command(self, bot, comm, groups):
-            """Join a channel, and say you did."""
+            """Say goodbye and leave channel."""
             chan = groups[0]
+            chan = chan.lstrip() # With the change in regex the match will have a space in front
             if chan is None:
                 chan = comm['channel']
             if not chan.startswith('#'):
                 chan = '#' + chan
+            comm['channel'] = chan # The bot should say goodbye in the channel that it leaves
             bot.reply(comm, 'Bye!')
             bot.leave(chan)
 
