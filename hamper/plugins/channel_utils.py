@@ -31,12 +31,13 @@ class ChannelUtils(ChatCommandPlugin):
         def command(self, bot, comm, groups):
             """Say goodbye and leave channel."""
             chan = groups[0]
-            chan = chan.lstrip() # With the change in regex the match will have a space in front
-            if chan is None:
+            if chan:
+                chan = chan.lstrip()  # Strip captured space
+            else:
                 chan = comm['channel']
             if not chan.startswith('#'):
                 chan = '#' + chan
-            comm['channel'] = chan # The bot should say goodbye in the channel that it leaves
+            comm['channel'] = chan  # Say Bye in the channel I'm leaving
             bot.reply(comm, 'Bye!')
             bot.leave(chan)
 
